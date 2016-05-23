@@ -14,7 +14,7 @@ if (envName === 'dev') {
 
 var ENV = {
 	name: envName,
-	publicPathRoot : (envName === 'dev' ? "http://galeries-lafayette-events.dev" : '' ),
+	publicPathRoot : (envName === 'dev' ? "http://project.dev" : '' ),
 	plugins: plugins
 };
 
