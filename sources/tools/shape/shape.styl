@@ -1,0 +1,48 @@
+shape__block(width = false, height = false)
+	display block
+	
+	if width
+		width width
+	
+	if height
+		height height
+	
+shape__color(color = false)
+	if color
+		background-color color
+
+shape__rect(width, height, color = false)
+	shape__block(width, height)
+	shape__color color
+
+shape__square(size, color = false)
+	shape__rect size size color
+
+shape__ellipsis(width, height = width, color = false)
+	shape__rect width height color
+	border-radius 50%
+	
+shape__circle(size, color = false)
+	shape__ellipsis size size color
+
+shape__triangle(baseWidth, height, color=false, direction=top)
+	shape__block(0, 0)
+	border-style: solid;
+	
+	shape_triangle_width = baseWidth/2
+
+	if direction==top
+		border-color: transparent transparent color transparent
+		border-width: 0 shape_triangle_width height shape_triangle_width
+		
+	if direction==bottom
+		border-color: color transparent transparent transparent;
+		border-width: height shape_triangle_width 0 shape_triangle_width
+
+	if direction==left
+		border-color: transparent color transparent transparent;
+		border-width: shape_triangle_width height shape_triangle_width 0
+
+	if direction==right
+		border-color: transparent transparent transparent color;
+		border-width: shape_triangle_width 0 shape_triangle_width height

@@ -1,0 +1,106 @@
+burger_button( 
+lineColor = white,
+lineWidth = 25px,
+lineHeight = 3px,
+lineGutter = 8px,
+
+transitionEasing = linear,
+transitionDuration =  0.1s,
+transitionDelay = 0ms,
+
+stateOnTransitionEasing = transitionEasing,
+stateOnTransitionDuration = transitionDuration,
+stateOnTransitionDelay = transitionDelay
+
+stateHoverTransformCoefficient = 1,
+stateOpenHoverTransformCoefficient = 1,
+
+stateOpenType = 'cross',
+stateOpenLineColor = lineColor,
+
+stateOpenTypeCrossLineRotation = 45deg,
+
+stateOpenTypeSpacedLineGutter = 26px
+)
+	/*
+		<a class="..." href="#">
+			<div class="burger_button-line-wrapper">
+				<div class="burger_button-line"></div>
+				<div class="burger_button-line"></div>
+				<div class="burger_button-line"></div>
+			</div>
+		</a>
+	*/
+
+	display block
+
+	.burger_button-line-wrapper
+		margin-left auto
+		margin-right auto
+		width lineWidth
+	
+	.burger_button-line
+		transform-origin 50% 50%
+		outline: 1px solid transparent;
+		shape_rect : lineWidth lineHeight lineColor
+		position relative
+		transform translateY(0)
+
+		if stateOpenLineColor != lineColor
+			transition : background-color stateOnTransitionDuration stateOnTransitionEasing stateOnTransitionDelay, transform stateOnTransitionDuration stateOnTransitionEasing stateOnTransitionDelay
+		else
+			transition : transform stateOnTransitionDuration stateOnTransitionEasing stateOnTransitionDelay
+
+		+.burger_button-line
+			margin-top lineGutter
+	
+	&:hover, &:focus
+		.burger_button-line:first-child
+			transform translateY((lineHeight + lineGutter) * stateHoverTransformCoefficient)
+		
+		.burger_button-line:last-child
+			transform translateY(-(lineHeight + lineGutter) * stateHoverTransformCoefficient)
+	
+	&.open
+		if stateOpenLineColor != lineColor
+			.burger_button-line
+				background-color stateOpenLineColor
+		
+		if stateOpenType == "cross"
+			.burger_button-line:first-child
+				transform translateY(lineGutter + lineHeight) rotate(stateOpenTypeCrossLineRotation)
+				
+				+.burger_button-line
+					transform rotate(stateOpenTypeCrossLineRotation)
+					
+			.burger_button-line:last-child
+				transform translateY(-(lineGutter + lineHeight)) rotate(- stateOpenTypeCrossLineRotation)
+			
+			&:hover, &:focus
+				_state_open_type_cross_line_rotation_value_hover = (stateOpenTypeCrossLineRotation + 10 * stateOpenHoverTransformCoefficient)
+				.burger_button-line:first-child
+					transform translateY(lineGutter + lineHeight) rotate(_state_open_type_cross_line_rotation_value_hover)
+					
+					+.burger_button-line
+						transform rotate(_state_open_type_cross_line_rotation_value_hover)
+				
+				.burger_button-line:last-child
+					transform translateY(-(lineGutter + lineHeight)) rotate(- _state_open_type_cross_line_rotation_value_hover)
+					
+		if stateOpenType == "spaced"
+			_state_open_type_spaced_line_gutter_value = stateOpenTypeSpacedLineGutter - lineGutter
+			
+			.burger_button-line:first-child
+				transform translateY(- _state_open_type_spaced_line_gutter_value )
+				
+			.burger_button-line:last-child
+				transform translateY(_state_open_type_spaced_line_gutter_value)
+			
+			_state_open_type_spaced_line_gutter_value_hover = (_state_open_type_spaced_line_gutter_value * 0.8 * stateOpenHoverTransformCoefficient)
+			
+			&:hover, &:focus
+				.burger_button-line:first-child
+					transform translateY(- _state_open_type_spaced_line_gutter_value_hover )
+					
+				.burger_button-line:last-child
+					transform translateY(_state_open_type_spaced_line_gutter_value_hover)
