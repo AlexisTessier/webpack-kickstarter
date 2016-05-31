@@ -21,7 +21,7 @@ module.exports = {
 	entry: "./sources/main.js",
 	output: {
 		path: path.join(__dirname, 'build'),
-		publicPath: ENV.publicPathRoot+"/design/galerieslafayetteevents/integration/build/",
+		publicPath: ENV.publicPathRoot,
 		filename: "bundle.js"
 	},
 	devtool: 'source-map',

@@ -14,7 +14,7 @@ if (envName === 'dev') {
 
 var ENV = {
 	name: envName,
-	publicPathRoot : (envName === 'dev' ? "http://project.dev" : '' ),
+	publicPathRoot : (envName === 'dev' ? "http://project.dev" : '' )+"/path/to/build/",
 	plugins: plugins
 };
 
