@@ -1,27 +1,56 @@
 var path = require('path');
 var webpack = require('webpack');
 
-var plugins = [];
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+/*---------------*/
+
+var argv = require('./argv');
+
+var plugins = [];
 var ENV = require('./.env.js');
+
+/*---------------*/
 
 for(var i = 0, imax = ENV.plugins.length;i<imax;i++){
 	plugins.push(ENV.plugins[i]);
 }
+
 delete ENV.plugins;
 
+/*---------------*/
+
+var extract = !!argv.extract;
+
+if (extract){
+	ENV.publicPath = './build/';
+	global.window = global; 
+}
+else{
+	//hotfix to avoid adding the variable ENV in the stylesheet
+	//maybe I should use EnvironmentPlugin instead of BannerPlugin
+	plugins.push(
+		new webpack.BannerPlugin('window.ENV = '+JSON.stringify(ENV)+';', {
+			raw: true,
+			entryOnly: true
+		})
+	);
+};
+
 plugins.push(
-	new webpack.BannerPlugin('window.ENV = '+JSON.stringify(ENV)+';', {
-		raw: true,
-		entryOnly: true
-	})
+	new ExtractTextPlugin("stylesheet.css", {
+		allChunks: true,
+        disable: !extract
+    })
 );
 
+/*---------*/
+
 module.exports = {
-	entry: "./sources/main.js",
+	entry: "./sources/root.js",
 	output: {
 		path: path.join(__dirname, 'build'),
-		publicPath: ENV.publicPathRoot,
+		publicPath: ENV.publicPath,
 		filename: "bundle.js"
 	},
 	devtool: 'source-map',
@@ -36,7 +65,7 @@ module.exports = {
 		}
 	},
 	resolve: {
-		modulesDirectories: ["web_modules", "node_modules"]
+		modulesDirectories: ["sources", "web_modules", "node_modules"]
 	},
 	plugins: plugins,
 	module: {
@@ -56,7 +85,10 @@ module.exports = {
 			{
 				test: /\.styl?$/,
 				exclude: /(node_modules|bower_components)/,
-				loader: 'style-loader!css-loader!stylus-loader?resolve url'
+				loader: ( extract ?
+					ExtractTextPlugin.extract('style-loader', 'css-loader!stylus-loader?resolve url')
+					: 'style-loader!css-loader!stylus-loader?resolve url'
+				)	
 			},
 			{
 				test: /\.(jpe?g|png|gif|svg)$/i,
@@ -78,9 +110,17 @@ module.exports = {
 		use: [require('nib')()],
 		import: [
 			'~nib/lib/nib/index.styl',
-			path.join(__dirname, 'sources/settings/*.styl'),
-			path.join(__dirname, 'sources/tools/*.styl'),
-			path.join(__dirname, 'sources/tools/*/*.styl')
+
+			path.join(__dirname, 'sources/settings/**/*.styl'),
+
+			path.join(__dirname, 'sources/tools/**/*.styl'),
+			path.join(__dirname, 'sources/tools/**/*.styl'),
+
+			path.join(__dirname, 'sources/view/*.styl'),
+			path.join(__dirname, 'sources/view/*/*.styl'),
+
+			path.join(__dirname, 'sources/abstract/*.styl'),
+			path.join(__dirname, 'sources/abstract/*/*.styl')
 		]
 	}
 };
