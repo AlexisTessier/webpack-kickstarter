@@ -6,4 +6,6 @@ require('tools/modernizr');
 
 require('./App.styl');
 
-export default require('./App.jsx').default
+export let appAware = require('./App.jsx').appAware;
+
+export default require('./App.jsx').default;

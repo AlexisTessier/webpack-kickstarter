@@ -10,28 +10,34 @@ import React from 'react'
 import {Component, PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 
+import { Router, Link } from 'react-router'
+
 /*----------------------------------*/
 
-export function highOrderComponent(ComponentToWrap){
+export function appAware(ComponentToWrap){
 	class AppComponent extends Component {
 		render() {
-			const { app, sizeClassHelper } = this.context;
+			const { app, sizeClassHelper, Link, route } = this.context;
 			return (
-				<ComponentToWrap {...this.props} app={app} sizeClassHelper={sizeClassHelper} />
+				<ComponentToWrap {...this.props} 
+					app={app}
+					sizeClassHelper={sizeClassHelper} 
+					Link={Link}
+					route={route}
+				/>
 			)
 		}
 	}
 
 	AppComponent.contextTypes = {
 		app: PropTypes.object.isRequired,
-		sizeClassHelper: PropTypes.object.isRequired
+		sizeClassHelper: PropTypes.object.isRequired,
+		Link: PropTypes.func.isRequired,
+		route: PropTypes.object.isRequired
 	}
 
 	return AppComponent
 }
-
-import _Header from 'component/Header';
-let Header = highOrderComponent(_Header);
 
 /*----------------------------------*/
 
@@ -54,21 +60,28 @@ export default class App extends Component{
 
 	static get propTypes() {
 		return {
-			sizeClassHelper: PropTypes.object.isRequired
+			sizeClassHelper: PropTypes.object.isRequired,
+			rootRoute: PropTypes.object.isRequired,
+			routes: PropTypes.object.isRequired,
+			history: PropTypes.object.isRequired
 		}
 	}
 
 	getChildContext() {
 		return {
 			app: this,
-			sizeClassHelper: this.props.sizeClassHelper
+			sizeClassHelper: this.props.sizeClassHelper,
+			Link,
+			route: this.props.routes
 		}
 	}
 
 	static get childContextTypes() {
 		return {
 			app: PropTypes.object.isRequired,
-			sizeClassHelper: PropTypes.object.isRequired
+			sizeClassHelper: PropTypes.object.isRequired,
+			Link: PropTypes.func.isRequired,
+			route: PropTypes.object.isRequired
 		}
 	}
 
@@ -96,10 +109,11 @@ export default class App extends Component{
 	}
 
 	render(){
-		return require('./App.react.jade')({
-			Header,
-			App: Object.assign({}, this.props, this.state)
-		});
+		return (
+			<div className='App'>
+				<Router routes={this.props.rootRoute} history={this.props.history} />
+			</div>
+		)
 	}
 }
 
