@@ -1,24 +1,78 @@
+import assert from 'assert'
+
+import {
+	isObject,
+	isFunction,
+	includes
+} from 'lodash'
+
 import React from 'react'
+import {Component, PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 
-import Header from 'component/Header';
+/*----------------------------------*/
 
-export default class App extends React.Component{
+export function highOrderComponent(ComponentToWrap){
+	class AppComponent extends Component {
+		render() {
+			const { app, sizeClassHelper } = this.context;
+			return (
+				<ComponentToWrap {...this.props} app={app} sizeClassHelper={sizeClassHelper} />
+			)
+		}
+	}
+
+	AppComponent.contextTypes = {
+		app: PropTypes.object.isRequired,
+		sizeClassHelper: PropTypes.object.isRequired
+	}
+
+	return AppComponent
+}
+
+import _Header from 'component/Header';
+let Header = highOrderComponent(_Header);
+
+/*----------------------------------*/
+
+export default class App extends Component{
 	constructor(props) {
 		super(...arguments);
 
-	    this.state = {
-	    	mustActiveFastClick: this.props.fastclick === 'true'
-	    }
+		this.state = {
+			mustActiveFastClick: this.props.fastclick === true
+		}
 	}
 
 	static get defaultProps(){
 		return {
 			title: getTagTitleContent(),
-			fastclick: "false",
+			fastclick: false,
 			description: getMetaDescription()
 		};
 	}
+
+	static get propTypes() {
+		return {
+			sizeClassHelper: PropTypes.object.isRequired
+		}
+	}
+
+	getChildContext() {
+		return {
+			app: this,
+			sizeClassHelper: this.props.sizeClassHelper
+		}
+	}
+
+	static get childContextTypes() {
+		return {
+			app: PropTypes.object.isRequired,
+			sizeClassHelper: PropTypes.object.isRequired
+		}
+	}
+
+	/*----------------------*/
 
 	componentDidUpdate(prevProps){
 		if(this.props.title !== prevProps.title){

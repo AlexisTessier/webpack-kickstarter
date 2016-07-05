@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node generate-images.js && node build-modernizr.js && webpack --progress --optimize-minimize --optimize-dedupe --env=prod",
-    "dev-server": "node generate-images.js && node build-modernizr.js && webpack --env=dev && webpack-dev-server --hot --inline --progress --env=dev"
+    "build-dev": "node generate-images.js && node build-modernizr.js && webpack --progress --env=dev",
+    "dev-server": "npm run build-dev && webpack-dev-server --hot --inline --progress --env=dev"
   },
   "author": "Alexis Tessier",
   "license": "MIT",

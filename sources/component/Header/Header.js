@@ -3,8 +3,10 @@ import React from 'react'
 export default class Header extends React.Component{
 	constructor(props) {
 		super(...arguments);
-
+		
 	    this.state = {};
+
+	    console.log(this.props);
 	}
 
 	render(){

@@ -1,4 +1,3 @@
-import assert from 'assert'
 import {isArray, isFunction, isObject, forEach, isNumber, isString, includes} from 'lodash'
 
 import eventEmitterFactory from 'event-emitter';
@@ -28,9 +27,13 @@ class SizeClassHelper {
 		this.frame = frame;
 
 		this.needUpdate = false;
+
+		dom.ready(()=>{
+			this.domReadyEvent()
+		});
 	}
 
-	init(){
+	domReadyEvent(){
 		this.needUpdate = true;
 
 		this.screenFrame = dom.create('div', this.option.screenFrameName);

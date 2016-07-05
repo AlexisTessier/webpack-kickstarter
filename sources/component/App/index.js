@@ -4,6 +4,6 @@ require('assets');
 
 require('tools/modernizr');
 
-require('./App.styl')
+require('./App.styl');
 
-export default require('./App.js').default
+export default require('./App.jsx').default

@@ -4,8 +4,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from 'component/App'
 
-ReactDOM.render(<App
+import SizeClassHelper from 'tools/size-class-helper'
+
+window.app = ReactDOM.render(<App
 	title="MyApp"
 	description="Webpack kickstarter react..."
-	fastclick="true"
+	fastclick={true}
+	sizeClassHelper={new SizeClassHelper()}
 />, document.getElementById('root'));

@@ -112,10 +112,11 @@ module.exports = {
 		import: [
 			'~nib/lib/nib/index.styl',
 
+			//comment/uncomment lines if no files matching
 			path.join(__dirname, 'sources/settings/**/*.styl'),
 			path.join(__dirname, 'sources/tools/**/*.styl'),
 			path.join(__dirname, 'sources/view/**/*.styl'),
-			path.join(__dirname, 'sources/abstract/**/*.styl')
+			// path.join(__dirname, 'sources/abstract/**/*.styl')
 		]
 	}
 };
