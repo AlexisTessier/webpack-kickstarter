@@ -8,8 +8,8 @@ import dom from '@alexistessier/dom';
 class SizeClassHelper {
 	constructor({
 		frame = window,
-		wrapper = dom.selectOne('html'),
-		body = dom.selectOne('body'),
+		wrapper = dom.get('html'),
+		body = dom.get('body'),
 		classPrefix = 'size-class',
 		screenFrameName= 'sizeClassHelper_screenFrame'
 	} = {}) {
@@ -33,7 +33,7 @@ class SizeClassHelper {
 	init(){
 		this.needUpdate = true;
 
-		this.screenFrame = dom.createDiv(this.option.screenFrameName);
+		this.screenFrame = dom.create('div', this.option.screenFrameName);
 		dom.appendChild(this.option.body, this.screenFrame);
 
 		this.screenFrame.setAttribute('style', 'z-index:-120;display:block;position:fixed;top:0;left:0;width:100%;height:100%;');
@@ -90,11 +90,11 @@ class SizeClassHelper {
 	}
 
 	get deviceWidth(){
-		return dom.getWidth(this.screenFrame);
+		return dom.width(this.screenFrame);
 	}
 
 	get deviceHeight(){
-		return dom.getHeight(this.screenFrame);
+		return dom.height(this.screenFrame);
 	}
 
 	updateSize(force = false){

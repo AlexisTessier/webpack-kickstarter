@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node generate-images.js && node build-modernizr.js && webpack --progress --optimize-minimize --optimize-dedupe --env=prod",
+    "dev-server": "node generate-images.js && node build-modernizr.js && webpack --env=dev && webpack-dev-server --hot --inline --progress --env=dev"
   },
   "author": "Alexis Tessier",
   "license": "MIT",
@@ -14,11 +16,13 @@
     "babel-core": "^6.5.2",
     "babel-loader": "^6.2.3",
     "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.11.1",
     "css-loader": "^0.23.1",
     "css-sourcemaps-webpack-plugin": "^1.0.3",
     "extract-text-webpack-plugin": "^1.0.1",
     "glob": "^7.0.3",
     "image-webpack-loader": "^1.6.3",
+    "jade-react-loader": "^1.0.2",
     "jsdom": "^9.2.1",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
@@ -33,12 +37,13 @@
     "webpack": "^1.12.14"
   },
   "dependencies": {
-    "@alexistessier/dom": "^2.1.2",
-    "@alexistessier/ui-component": "^3.1.2",
+    "@alexistessier/dom": "^3.0.2",
     "babel-plugin-transform-es2015-classes": "^6.5.2",
-    "babel-polyfill": "^6.5.0",
+    "babel-polyfill": "^6.9.1",
     "event-emitter": "^0.3.4",
     "fastclick": "^1.0.6",
-    "lodash": "^4.5.1"
+    "lodash": "^4.5.1",
+    "react": "^15.2.0",
+    "react-dom": "^15.2.0"
   }
 }

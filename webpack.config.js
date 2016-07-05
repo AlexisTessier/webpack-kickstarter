@@ -20,22 +20,17 @@ delete ENV.plugins;
 
 /*---------------*/
 
+plugins.push(
+	new webpack.DefinePlugin({
+	  "window.ENV": JSON.stringify(ENV)
+	})
+);
+
 var extract = !!argv.extract;
 
 if (extract){
 	ENV.publicPath = './build/';
-	global.window = global; 
 }
-else{
-	//hotfix to avoid adding the variable ENV in the stylesheet
-	//maybe I should use EnvironmentPlugin instead of BannerPlugin
-	plugins.push(
-		new webpack.BannerPlugin('window.ENV = '+JSON.stringify(ENV)+';', {
-			raw: true,
-			entryOnly: true
-		})
-	);
-};
 
 plugins.push(
 	new ExtractTextPlugin("stylesheet.css", {
@@ -47,7 +42,7 @@ plugins.push(
 /*---------*/
 
 module.exports = {
-	entry: "./sources/root.js",
+	entry: "./sources/root.jsx",
 	output: {
 		path: path.join(__dirname, 'build'),
 		publicPath: ENV.publicPath,
@@ -65,21 +60,27 @@ module.exports = {
 		}
 	},
 	resolve: {
+    	extensions: ['', '.js', '.jsx'],
 		modulesDirectories: ["sources", "web_modules", "node_modules"]
 	},
 	plugins: plugins,
 	module: {
 		loaders: [
 			{
+				test: /\.react\.jade$/,
+				loader: "jade-react" 
+			},
+			{
 				test: /\.jade$/,
+				exclude: /\.react\.jade$/,
 				loader: "jade"
 			},
 			{
-				test: /\.js?$/,
+				test: /\.(js?|jsx)$/,
 				exclude: /(node_modules|bower_components)/,
 				loader: 'babel',
 				query: {
-					presets: ['es2015']
+					presets: ['es2015', 'react']
 				}
 			},
 			{
@@ -112,15 +113,9 @@ module.exports = {
 			'~nib/lib/nib/index.styl',
 
 			path.join(__dirname, 'sources/settings/**/*.styl'),
-
 			path.join(__dirname, 'sources/tools/**/*.styl'),
-			path.join(__dirname, 'sources/tools/**/*.styl'),
-
-			path.join(__dirname, 'sources/view/*.styl'),
-			path.join(__dirname, 'sources/view/*/*.styl'),
-
-			path.join(__dirname, 'sources/abstract/*.styl'),
-			path.join(__dirname, 'sources/abstract/*/*.styl')
+			path.join(__dirname, 'sources/view/**/*.styl'),
+			path.join(__dirname, 'sources/abstract/**/*.styl')
 		]
 	}
 };

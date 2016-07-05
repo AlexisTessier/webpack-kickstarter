@@ -41,5 +41,5 @@
 + Build modernizr (séparé du webpack)
 
 	```
-	node modernizr-build.js
+	node build-modernizr.js
 	```
