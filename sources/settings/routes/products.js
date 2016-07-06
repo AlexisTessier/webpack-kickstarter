@@ -1,19 +1,9 @@
 let route = {
 	path: require('./index').products(),
 
-	getChildRoutes(partialNextState, callback) {
-	  require.ensure([], function (require) {
-	    callback(null, [
-	      require('./product').default
-	    ])
-	  })
-	},
-
-	getIndexRoute(partialNextState, callback) {
+	getComponent(partialNextState, callback) {
 		require.ensure([], function (require) {
-			callback(null, {
-				component: require('component/ProductList').default
-			})
+			callback(null, require('component/ProductList').default)
 		})
 	}
 };

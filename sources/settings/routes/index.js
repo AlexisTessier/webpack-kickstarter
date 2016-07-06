@@ -1,4 +1,5 @@
 module.exports = {
-	products: () => '/',
+	root: () => '/',
+	products: () => '/products',
 	product: () => '/product'
 };

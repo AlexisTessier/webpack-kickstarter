@@ -1,5 +1,11 @@
 import "babel-polyfill"
 
+require('generic');
+
+require('assets');
+
+require('tools/modernizr');
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from 'component/App'
@@ -7,7 +13,7 @@ import App from 'component/App'
 import SizeClassHelper from 'tools/size-class-helper'
 import { browserHistory } from 'react-router'
 import routes from 'settings/routes'
-import rootRoute from 'settings/routes/products'
+import rootRoute from 'settings/routes/root'
 
 window.app = ReactDOM.render(<App
 	title="MyApp"
@@ -17,4 +23,9 @@ window.app = ReactDOM.render(<App
 	rootRoute={rootRoute}
 	routes={routes}
 	history={browserHistory}
+	transition={{
+		'default': {
+			name: 'no'
+		}
+	}}
 />, document.getElementById('root'));

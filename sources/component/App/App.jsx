@@ -3,13 +3,14 @@ import assert from 'assert'
 import {
 	isObject,
 	isFunction,
-	includes
+	includes,
+	kebabCase
 } from 'lodash'
 
 import React from 'react'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import {Component, PropTypes} from 'react'
 import ReactDOM from 'react-dom'
-
 import { Router, Link } from 'react-router'
 
 /*----------------------------------*/
@@ -17,13 +18,14 @@ import { Router, Link } from 'react-router'
 export function appAware(ComponentToWrap){
 	class AppComponent extends Component {
 		render() {
-			const { app, sizeClassHelper, Link, route } = this.context;
+			const { app, sizeClassHelper, Link, route, transition } = this.context;
 			return (
 				<ComponentToWrap {...this.props} 
 					app={app}
 					sizeClassHelper={sizeClassHelper} 
 					Link={Link}
 					route={route}
+					transition={transition}
 				/>
 			)
 		}
@@ -33,13 +35,77 @@ export function appAware(ComponentToWrap){
 		app: PropTypes.object.isRequired,
 		sizeClassHelper: PropTypes.object.isRequired,
 		Link: PropTypes.func.isRequired,
-		route: PropTypes.object.isRequired
+		route: PropTypes.object.isRequired,
+		transition: PropTypes.object
 	}
 
 	return AppComponent
 }
 
-/*----------------------------------*/
+/*--------------------------------*/
+
+class _AppRouteTransitionLayout extends Component{
+	constructor(){
+		super(...arguments);
+
+		this.lastPath = null;
+		this.state = {};
+	}
+
+	render(){
+		let newPath = this.props.location.pathname;
+
+		let kebabCasedLast = this.lastPath ? kebabCase(this.lastPath) : '';
+		let from = 'from-'+(kebabCasedLast.length > 0 ? kebabCasedLast : 'index');
+
+		let kebabCasedNew = kebabCase(newPath);
+		let to = 'to-'+kebabCase(kebabCasedNew.length > 0 ? kebabCasedNew : 'index');
+
+		this.lastPath = newPath;
+		let transitionList = this.props.transition || {};
+
+		let defaultTransition = {
+			name: from+'-'+to,
+			component: 'div',
+			appear: false,
+			appearTimeout: 500,
+			enter: false,
+			enterTimeout: 500,
+			leave: false,
+			leaveTimeout: 500
+		};
+
+		let transition = isObject(transitionList[from+'-'+to]) ? transitionList[from+'-'+to] : (
+			isObject(transitionList['default']) ? transitionList['default'] : defaultTransition
+		);
+
+		return(
+			<ReactCSSTransitionGroup
+				className={"App-route-transition-"+(transition.name || defaultTransition.name)}
+				component={(transition.component || defaultTransition.component)}
+				transitionName={{
+					appear: 'appear',
+					enter: 'enter',
+					leave: 'leave'
+				}}
+				transitionAppear={(transition.appear || defaultTransition.appear)}
+				transitionAppearTimeout={(transition.appearTimeout || defaultTransition.appearTimeout)}
+				transitionEnter={(transition.enter || defaultTransition.enter)}
+				transitionEnterTimeout={(transition.enterTimeout || defaultTransition.enterTimeout)}
+				transitionLeave={(transition.leave || defaultTransition.leave)}
+				transitionLeaveTimeout={(transition.leaveTimeout || defaultTransition.leaveTimeout)}
+			>
+				{React.cloneElement(this.props.children, {
+					key: newPath
+				})}
+			</ReactCSSTransitionGroup>
+		)
+	}
+};
+
+export let AppRouteTransitionLayout = appAware(_AppRouteTransitionLayout);
+
+/*-------------------------------*/
 
 export default class App extends Component{
 	constructor(props) {
@@ -72,7 +138,8 @@ export default class App extends Component{
 			app: this,
 			sizeClassHelper: this.props.sizeClassHelper,
 			Link,
-			route: this.props.routes
+			route: this.props.routes,
+			transition: this.props.transition
 		}
 	}
 
@@ -81,7 +148,8 @@ export default class App extends Component{
 			app: PropTypes.object.isRequired,
 			sizeClassHelper: PropTypes.object.isRequired,
 			Link: PropTypes.func.isRequired,
-			route: PropTypes.object.isRequired
+			route: PropTypes.object.isRequired,
+			transition: PropTypes.object
 		}
 	}
 
@@ -111,7 +179,7 @@ export default class App extends Component{
 	render(){
 		return (
 			<div className='App'>
-				<Router routes={this.props.rootRoute} history={this.props.history} />
+				<Router routes={this.props.rootRoute} history={this.props.history}/>
 			</div>
 		)
 	}
