@@ -67,6 +67,10 @@ module.exports = {
 	module: {
 		loaders: [
 			{
+				test: /\.json$/,
+				loader: "json"
+			},
+			{
 				test: /\.react\.jade$/,
 				loader: "jade-react" 
 			},

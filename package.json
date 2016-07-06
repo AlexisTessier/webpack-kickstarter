@@ -25,6 +25,7 @@
     "image-webpack-loader": "^1.6.3",
     "jade-react-loader": "^1.0.2",
     "jsdom": "^9.2.1",
+    "json-loader": "^0.5.4",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "modernizr": "^3.3.1",
@@ -41,6 +42,7 @@
     "@alexistessier/dom": "^3.0.2",
     "babel-plugin-transform-es2015-classes": "^6.5.2",
     "babel-polyfill": "^6.9.1",
+    "bowser": "^1.4.0",
     "event-emitter": "^0.3.4",
     "fastclick": "^1.0.6",
     "jsdom": "^9.4.1",
@@ -48,6 +50,8 @@
     "react": "^15.2.0",
     "react-addons-css-transition-group": "^15.2.0",
     "react-dom": "^15.2.0",
-    "react-router": "^2.5.2"
+    "react-router": "^2.5.2",
+    "superagent": "^2.0.0",
+    "superagent-d2l-cors-proxy": "^0.3.0"
   }
 }

@@ -15,6 +15,8 @@ import { browserHistory } from 'react-router'
 import routes from 'settings/routes'
 import rootRoute from 'settings/routes/root'
 
+window.api = require('tools/api').default;
+
 window.app = ReactDOM.render(<App
 	title="MyApp"
 	description="Webpack kickstarter react..."
