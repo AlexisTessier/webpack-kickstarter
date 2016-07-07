@@ -7,7 +7,8 @@ let route = {
 		require.ensure([], function (require) {
 			callback(null, [
 				require('./products.js').default,
-				require('./product.js').default
+				require('./product.js').default,
+				require('./help.js').default
 			])
 		})
 	},

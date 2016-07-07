@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 
 import {appAware} from 'abstract/appAware'
 
-export default appAware(class ProductList extends Component{
+export default appAware(class AppHeader extends Component{
 	constructor(props) {
 		super(...arguments);
 		
@@ -12,8 +12,8 @@ export default appAware(class ProductList extends Component{
 	}
 
 	render(){
-		return require('./ProductList.react.jade')(
+		return require('./AppHeader.react.jade')(
 			Object.assign({}, this.props, this.state)
 		);
 	}
-})
+});

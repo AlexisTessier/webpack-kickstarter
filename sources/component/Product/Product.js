@@ -2,7 +2,7 @@ import React from 'react'
 import {Component, PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 
-import {appAware} from 'component/App';
+import {appAware} from 'abstract/appAware'
 
 export default appAware(class Product extends Component{
 	constructor(props) {

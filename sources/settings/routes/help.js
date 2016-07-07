@@ -1,9 +1,9 @@
 let route = {
-	path: require('./index').products(),
+	path: require('./index').help(),
 
 	getComponent(partialNextState, callback) {
 		require.ensure([], function (require) {
-			callback(null, require('component/ProductListPage').default)
+			callback(null, require('component/HelpPage').default)
 		})
 	}
 };

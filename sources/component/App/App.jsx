@@ -15,32 +15,9 @@ import { Router, Link } from 'react-router'
 
 /*----------------------------------*/
 
-export function appAware(ComponentToWrap){
-	class AppComponent extends Component {
-		render() {
-			const { app, sizeClassHelper, Link, route, transition } = this.context;
-			return (
-				<ComponentToWrap {...this.props} 
-					app={app}
-					sizeClassHelper={sizeClassHelper} 
-					Link={Link}
-					route={route}
-					transition={transition}
-				/>
-			)
-		}
-	}
+import {appAware} from 'abstract/appAware'
 
-	AppComponent.contextTypes = {
-		app: PropTypes.object.isRequired,
-		sizeClassHelper: PropTypes.object.isRequired,
-		Link: PropTypes.func.isRequired,
-		route: PropTypes.object.isRequired,
-		transition: PropTypes.object
-	}
-
-	return AppComponent
-}
+import AppHeader from 'component/AppHeader'
 
 /*--------------------------------*/
 
@@ -80,25 +57,28 @@ class _AppRouteTransitionLayout extends Component{
 		);
 
 		return(
-			<ReactCSSTransitionGroup
-				className={"App-route-transition-"+(transition.name || defaultTransition.name)}
-				component={(transition.component || defaultTransition.component)}
-				transitionName={{
-					appear: 'appear',
-					enter: 'enter',
-					leave: 'leave'
-				}}
-				transitionAppear={(transition.appear || defaultTransition.appear)}
-				transitionAppearTimeout={(transition.appearTimeout || defaultTransition.appearTimeout)}
-				transitionEnter={(transition.enter || defaultTransition.enter)}
-				transitionEnterTimeout={(transition.enterTimeout || defaultTransition.enterTimeout)}
-				transitionLeave={(transition.leave || defaultTransition.leave)}
-				transitionLeaveTimeout={(transition.leaveTimeout || defaultTransition.leaveTimeout)}
-			>
-				{React.cloneElement(this.props.children, {
-					key: newPath
-				})}
-			</ReactCSSTransitionGroup>
+			<div className="AppRouteTransitionLayout">
+				<AppHeader />
+				<ReactCSSTransitionGroup
+					className={"App-route-transition-"+(transition.name || defaultTransition.name)}
+					component={(transition.component || defaultTransition.component)}
+					transitionName={{
+						appear: 'appear',
+						enter: 'enter',
+						leave: 'leave'
+					}}
+					transitionAppear={(transition.appear || defaultTransition.appear)}
+					transitionAppearTimeout={(transition.appearTimeout || defaultTransition.appearTimeout)}
+					transitionEnter={(transition.enter || defaultTransition.enter)}
+					transitionEnterTimeout={(transition.enterTimeout || defaultTransition.enterTimeout)}
+					transitionLeave={(transition.leave || defaultTransition.leave)}
+					transitionLeaveTimeout={(transition.leaveTimeout || defaultTransition.leaveTimeout)}
+				>
+					{React.cloneElement(this.props.children, {
+						key: newPath
+					})}
+				</ReactCSSTransitionGroup>
+			</div>
 		)
 	}
 };
