@@ -1,4 +1,11 @@
 .AppHeader
-	h2.AppHeader-logo-folio-junior Folio junior
-	h1.AppHeader-title Les promos magiques du Chemin de Traverse
-	Link.AppHeader-help-button(to=route.help()) Aide
+	.AppHeader-background
+		.AppHeader-background-shadow
+		.AppHeader-background-texture
+	.AppHeader-inner-wrapper
+		a(href="http://www.gallimard-jeunesse.fr/Catalogue/GALLIMARD-JEUNESSE/Folio-Junior" target="_blank").AppHeader-logo-folio-junior Folio junior
+		h1.AppHeader-title
+			| Les promos magiques
+			br
+			| du Chemin de Traverse
+		Link.AppHeader-help-button(to=route.help()) Aide

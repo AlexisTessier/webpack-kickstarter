@@ -8,6 +8,6 @@ plugins.push(new CssSourcemapPlugin());
 
 module.exports = {
 	name: 'dev',
-	publicPath: "/build/",
+	publicPath: "http://localhost:3000/build/",
 	plugins: plugins
 };

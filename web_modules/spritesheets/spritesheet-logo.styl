@@ -1,0 +1,21 @@
+@require "./tools.styl"
+
+spritesheetLogo = {"_2x":{"width":248,"height":91,"isMainResolution":false,"resolutionValue":2,"minDpi":192,"url":"./logo@2x.png"},"_1x":{"width":128,"height":48,"isMainResolution":true,"resolutionValue":1,"minDpi":96,"url":"./logo.png"},"width":128,"height":48,"resolutionValue":1,"minDpi":96,"name":"spritesheet-logo","mainResolution":"_1x","resolutionList":{"_2x":"_2x","_1x":"_1x"},"url":"./logo.png"}
+spriteLogoFolioJunior = {"name":"sprite-logo-folio-junior","spritesheetName":"spritesheet-logo","resolution":"_1x","resolutionValue":1,"minDpi":96,"width":60,"height":44,"x":2,"y":2,"_2x":{"name":"sprite-logo-folio-junior","spritesheetName":"spritesheet-logo","resolution":"_2x","resolutionValue":2,"minDpi":192,"width":120,"height":87,"x":2,"y":2},"_1x":{"name":"sprite-logo-folio-junior","spritesheetName":"spritesheet-logo","resolution":"_1x","resolutionValue":1,"minDpi":96,"width":60,"height":44,"x":2,"y":2}}
+spriteLogoTest = {"name":"sprite-logo-test","spritesheetName":"spritesheet-logo","resolution":"_1x","resolutionValue":1,"minDpi":96,"width":60,"height":44,"x":66,"y":2,"_2x":{"name":"sprite-logo-test","spritesheetName":"spritesheet-logo","resolution":"_2x","resolutionValue":2,"minDpi":192,"width":120,"height":87,"x":126,"y":2},"_1x":{"name":"sprite-logo-test","spritesheetName":"spritesheet-logo","resolution":"_1x","resolutionValue":1,"minDpi":96,"width":60,"height":44,"x":66,"y":2}}
+
+spritesheet_logo(fullSpritesheet = true)
+	spritesheet(spritesheetLogo, fullSpritesheet)
+sprite_logo_folio_junior()
+	spritesheet_logo(fullSpritesheet: false)
+	sprite(spriteLogoFolioJunior)
+sprite_logo_test()
+	spritesheet_logo(fullSpritesheet: false)
+	sprite(spriteLogoTest)
+
+$spritesheet-logo
+	spritesheet_logo()
+$sprite-logo-folio-junior
+	sprite_logo_folio_junior()
+$sprite-logo-test
+	sprite_logo_test()

@@ -98,8 +98,9 @@ module.exports = {
 			{
 				test: /\.(jpe?g|png|gif|svg)$/i,
 				loaders: [
-					'file?hash=sha512&digest=hex&name=[hash].[ext]',
+					'file?hash=sha512&digest=hex&name=[hash].[ext]'/*,
 					'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
+					*/
 				]
 			},
 			{
@@ -115,6 +116,7 @@ module.exports = {
 		use: [require('nib')()],
 		import: [
 			'~nib/lib/nib/index.styl',
+			'~spritesheets/sprites.styl',
 
 			//comment/uncomment lines if no files matching
 			path.join(__dirname, 'sources/settings/**/*.styl'),
