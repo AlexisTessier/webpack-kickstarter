@@ -12,6 +12,10 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import {Component, PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Link } from 'react-router'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import reducers from 'settings/reducers'
+let store = createStore(reducers);
 
 /*----------------------------------*/
 
@@ -20,6 +24,7 @@ import {appAware} from 'abstract/appAware'
 import AppHeader from 'component/AppHeader'
 
 /*--------------------------------*/
+
 
 class _AppRouteTransitionLayout extends Component{
 	constructor(){
@@ -158,9 +163,11 @@ export default class App extends Component{
 
 	render(){
 		return (
-			<div className='App'>
-				<Router routes={this.props.rootRoute} history={this.props.history}/>
-			</div>
+			<Provider store={store}>
+				<div className='App'>
+					<Router routes={this.props.rootRoute} history={this.props.history}/>
+				</div>
+			</Provider>
 		)
 	}
 }

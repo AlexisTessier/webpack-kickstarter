@@ -112,18 +112,18 @@ export default class Api {
 
 function responseHandler(resolve, reject){
 	return function (error, response) {
+		if(error){
+			console.log(error.message);
+			if(isFunction(reject)){
+				reject(error, response);
+			}
+			return;
+		}
 		if(response.status !== 200){
 			let err = new Error(error ? error : 'REQUEST BAD STATUS');
 			console.log(err.message);
 			if(isFunction(reject)){
 				reject(err, response);
-			}
-			return;
-		}
-		if(error){
-			console.log(error.message);
-			if(isFunction(reject)){
-				reject(error, response);
 			}
 			return;
 		}

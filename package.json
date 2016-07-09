@@ -37,7 +37,8 @@
     "svgo": "^0.6.6",
     "svgpath": "^2.1.6",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.14"
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
     "@alexistessier/dom": "^3.0.2",
@@ -48,10 +49,12 @@
     "fastclick": "^1.0.6",
     "jsdom": "^9.4.1",
     "lodash": "^4.5.1",
-    "react": "^15.2.0",
-    "react-addons-css-transition-group": "^15.2.0",
-    "react-dom": "^15.2.0",
+    "react": "^15.2.1",
+    "react-addons-css-transition-group": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "react-redux": "^4.4.5",
     "react-router": "^2.5.2",
+    "redux": "^3.5.2",
     "superagent": "^2.0.0",
     "superagent-d2l-cors-proxy": "^0.3.0"
   }
