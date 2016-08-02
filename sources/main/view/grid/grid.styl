@@ -1,0 +1,38 @@
+_grid(boxSelector, baseWidth, numberOfColumns, gutter, rowGutter = 0, gutterProperty = 'margin')
+	numberOfGutter = (numberOfColumns - 1)
+	availableWidth = baseWidth - (numberOfGutter*gutter)
+	baseColumnWidth = availableWidth / numberOfColumns
+
+	columnWidth = ((baseColumnWidth / baseWidth) * 100%)
+	gutterWidth = ((gutter / baseWidth) * 100%)
+
+	display block
+	width (baseWidth)px
+	max-width 100%
+	
+	zoom 1
+	
+	&:before, &:after
+		content ""
+		display table
+	
+	&:after
+		clear both
+	
+	{boxSelector}
+		display block
+		float left
+		width columnWidth
+		{gutterProperty}-bottom rowGutter
+		
+		+{boxSelector}
+			{gutterProperty}-left gutterWidth
+
+		&:nth-child({numberOfColumns}n+1)
+			{gutterProperty}-left 0
+			clear both
+		
+		for index in (1..(numberOfColumns))
+			&:nth-child({numberOfColumns}n+{index})
+				&:nth-last-child(-n+{(numberOfColumns - index + 1)})
+					{gutterProperty}-bottom 0

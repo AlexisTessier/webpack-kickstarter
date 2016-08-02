@@ -42,7 +42,7 @@ plugins.push(
 /*---------*/
 
 module.exports = {
-	entry: "./sources/root.jsx",
+	entry: "./sources/main/root.jsx",
 	output: {
 		path: path.join(__dirname, 'build'),
 		publicPath: ENV.publicPath,
@@ -61,11 +61,15 @@ module.exports = {
 	},
 	resolve: {
     	extensions: ['', '.js', '.jsx'],
-		modulesDirectories: ["sources", "web_modules", "node_modules"]
+		modulesDirectories: ["sources/main", "sources/generated", "web_modules", "node_modules"]
 	},
 	plugins: plugins,
 	module: {
 		loaders: [
+			{
+                test: /\.glsl$/,
+                loader: 'webpack-glsl'
+            },
 			{
 				test: /\.json$/,
 				loader: "json"
@@ -115,12 +119,12 @@ module.exports = {
 		use: [require('nib')()],
 		import: [
 			'~nib/lib/nib/index.styl',
-			'~spritesheets/sprites.styl',
+			'~assets/spritesheets/sprites.styl',
 
 			//comment/uncomment lines if no files matching
-			path.join(__dirname, 'sources/settings/**/*.styl'),
-			path.join(__dirname, 'sources/tools/**/*.styl'),
-			path.join(__dirname, 'sources/view/**/*.styl'),
+			path.join(__dirname, 'sources/*/settings/**/*.styl'),
+			path.join(__dirname, 'sources/*/tools/**/*.styl'),
+			path.join(__dirname, 'sources/*/view/**/*.styl'),
 			// path.join(__dirname, 'sources/abstract/**/*.styl')
 		]
 	}

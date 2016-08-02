@@ -3,12 +3,13 @@ var SVGO  = require('svgo');
 var _ = require('lodash');
 var path = require('path');
 var fs = require('fs');
-var dom = require('@alexistessier/dom');
-
+var dom = require('@alexistessier/dom').default;
 var svgo = new SVGO();
 var svgpath = require('svgpath');
 
 var jsdom = require("jsdom");
+
+var saveFile = require('./save-file');
 
 var SvgComponentGenerator = (function() {
 	'use strict';
@@ -20,9 +21,15 @@ var SvgComponentGenerator = (function() {
 		}
 		
 		this.inputPath = params.inputPath;
+		this.fileContentTransformMethod = (params.fileContentTransformMethod || function (name, content) {
+			return content;
+		});
+		this.toolsOutputPath = params.toolsOutputPath;
+		this.classAttributeString = params.classAttributeString || 'class';
 		this.outputPath = params.outputPath;
 		this.outputExt = params.outputExt || '.svg';
 		this.sizeAliases = params.sizeAliases;
+		this.attributesToRemove = params.attributesToRemove || ['id'];
 
 		this.generatedList = {};
 	}
@@ -37,7 +44,6 @@ var SvgComponentGenerator = (function() {
 
 			_.forEach(fileList, function (filePath) {
 				self.optimizeFile(filePath, function (name, originalSize, sizeAliases, data) {
-
 					self.totalCount+=_.size(sizeAliases);
 
 					self.createComponent(name, '', originalSize, data, originalSize, function () {
@@ -69,6 +75,18 @@ var SvgComponentGenerator = (function() {
 			}
 
 			svgo.optimize(data, function(result) {
+				let mark = 'viewBox="';
+				let vb = result.data.indexOf(mark);
+				vb+=mark.length;
+				let end_vb = result.data.indexOf('"', vb);
+				let viewBox = result.data.substring(vb, end_vb).split(' ');
+
+				if (typeof result.info.width !== 'number') {
+					result.info.width = parseInt(viewBox[2], 10);
+				}
+				if (typeof result.info.height !== 'number') {
+					result.info.height = parseInt(viewBox[3], 10);
+				}
 				callback(basename, {width:result.info.width, height:result.info.height}, sizeAliases, result.data);
 			});
 		});
@@ -122,7 +140,7 @@ var SvgComponentGenerator = (function() {
 				+newLine+tab+tab+'display block'
 			;
 
-			this.save(path.join(__dirname, 'sources/tools/svgComponent.styl'), fileContent);
+			this.save(this.toolsOutputPath, fileContent);
 		}
 	};
 
@@ -133,20 +151,19 @@ var SvgComponentGenerator = (function() {
 		var fileNameBase = _.kebabCase(name)+modifier;
 		var fileName = fileNameBase+this.outputExt;
 
-		var outputPath = path.join(this.outputPath, fileName);
-
 		var sx = size.width/originalSize.width;
 		var sy = size.height/originalSize.height;
 
 		jsdom.env(data, [], function (err, window) {
 			var all = window.document.querySelectorAll('*');
-
 			dom.forEach(all, function (el) {
-				el.removeAttribute('id');
+				_.forEach(self.attributesToRemove, function (attr) {
+					el.removeAttribute(attr);
+				});
 			});
 
 			var svgroot = window.document.querySelector('svg');
-			svgroot.setAttribute('class', elementClass);
+			svgroot.setAttribute(self.classAttributeString, elementClass);
 			var viewBox = (svgroot.getAttribute('viewBox') || '0 0 '+size.width+' '+size.height).split(' ');
 
 			viewBox[0] = viewBox[0] * sx;
@@ -183,15 +200,24 @@ var SvgComponentGenerator = (function() {
 
 			var fileContent = window.document.querySelector('body').innerHTML;
 
-			self.save(outputPath, fileContent);
+			var fileList = self.fileContentTransformMethod(fileNameBase, fileContent);
+			fileList = _.isArray(fileList) ? fileList : [{name: fileName, content:fileList}];
+
+			_.forEach(fileList, function (file) {
+				var outputPath = path.join(self.outputPath, file.name);
+				
+				self.save(outputPath, file.content);
+			});
 		});
 	};
 
 	SvgComponentGenerator.prototype.save = function(path, content) {
-		fs.writeFile(path, content, {encoding: 'utf8'}, function (err) {
-			if (err) throw err;
-
-			console.log('file save at path '+path);
+		saveFile({
+			path: path,
+			content: content,
+			reportMessageTransform: function (message) {
+				return 'SvgComponentGenerator => '+message;
+			}
 		});
 	};
 

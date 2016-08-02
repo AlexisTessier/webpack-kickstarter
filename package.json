@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node generate-images.js && node build-modernizr.js && webpack --progress --optimize-minimize --optimize-dedupe --env=prod",
-    "build-dev": "node generate-images.js && node build-modernizr.js && webpack --progress --env=dev",
-    "dev-server": "npm run build-dev && webpack-dev-server --hot --inline --progress --env=dev"
+    "create-generated-sources": "node generate-images.js && node generate-modernizr.js",
+    "build": "npm run create-generated-sources && webpack --progress --optimize-minimize --optimize-dedupe --env=prod",
+    "build-dev": "npm run create-generated-sources && webpack --progress --env=dev",
+    "dev-server": "npm run create-generated-sources && node open.js && webpack-dev-server --hot --inline --progress --env=dev",
+    "watch": "npm run create-generated-sources && webpack --watch --progress --env=dev",
+    "extract-css": "npm run create-generated-sources && webpack --extract --progress --optimize-minimize --optimize-dedupe --env=prod"
   },
   "author": "Alexis Tessier",
   "license": "MIT",
@@ -31,6 +34,7 @@
     "mkdirp": "^0.5.1",
     "modernizr": "^3.3.1",
     "nib": "^1.1.0",
+    "open": "0.0.5",
     "style-loader": "^0.13.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^1.5.1",
@@ -38,24 +42,29 @@
     "svgpath": "^2.1.6",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.14",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "webpack-glsl-loader": "^1.0.1"
   },
   "dependencies": {
-    "@alexistessier/dom": "^3.0.2",
+    "@alexistessier/dom": "^3.0.5",
     "babel-plugin-transform-es2015-classes": "^6.5.2",
     "babel-polyfill": "^6.9.1",
     "bowser": "^1.4.0",
     "event-emitter": "^0.3.4",
     "fastclick": "^1.0.6",
+    "fps": "0.0.3",
+    "glslCanvas": "0.0.17",
     "jsdom": "^9.4.1",
     "lodash": "^4.5.1",
+    "mouse-position": "^2.0.1",
+    "point-at-length": "^1.0.1",
     "react": "^15.2.1",
     "react-addons-css-transition-group": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-redux": "^4.4.5",
     "react-router": "^2.5.2",
     "redux": "^3.5.2",
-    "superagent": "^2.0.0",
+    "superagent": "^2.1.0",
     "superagent-d2l-cors-proxy": "^0.3.0"
   }
 }

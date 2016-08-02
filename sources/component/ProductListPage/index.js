@@ -1,1 +1,0 @@
-export default require('./ProductListPage.js').default
