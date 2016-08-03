@@ -16,19 +16,15 @@ var svgGen = new SvgComponentGenerator({
 	sizeAliases: require(path.join(inputPath, 'size-aliases.js')),
 	fileContentTransformMethod: function (name, content) {
 		var componentName = _.upperFirst(_.camelCase(name));
-		var reactContent = [
-			"import React from 'react'",
-			"import {Component, PropTypes} from 'react'",
-			"import ReactDOM from 'react-dom'",
-			"",
+		var componentContent = [
 			"export default function "+componentName+" (){",
-			"	return "+content+";",
+			"	return \""+_.replace(_.replace(_.replace(_.replace(content, '"', '\\"'), '\t', ''), '\n', ''), '\r', '')+"\";",
 			"}"
 		].join('\n');
 
 		return [{
-			name: componentName+'/index.jsx',
-			content: reactContent
+			name: componentName+'/index.js',
+			content: componentContent
 		}]
 	}
 });

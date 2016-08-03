@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "create-generated-sources": "node generate-images.js && node generate-modernizr.js",
+    "create-generated-sources": "node create-generated-sources.js",
     "build": "npm run create-generated-sources && webpack --progress --optimize-minimize --optimize-dedupe --env=prod",
     "build-dev": "npm run create-generated-sources && webpack --progress --env=dev",
     "dev-server": "npm run create-generated-sources && node open.js && webpack-dev-server --hot --inline --progress --env=dev",
