@@ -17,6 +17,8 @@ export default class TweenHelper{
 	inject({
 		frame = window
 	} = {}){
+		assert(isObject(frame), 'TweenHelper injected frame must be an object');
+		assert(isFunction(frame.requestAnimationFrame), 'TweenHelper injected frame.requestAnimationFrame must be a function');
 
 		this.frame = frame;
 

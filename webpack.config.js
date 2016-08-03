@@ -42,7 +42,7 @@ plugins.push(
 /*---------*/
 
 module.exports = {
-	entry: "./sources/main/root.jsx",
+	entry: "./sources/main/root.js",
 	output: {
 		path: path.join(__dirname, 'build'),
 		publicPath: ENV.publicPath,
@@ -107,6 +107,9 @@ module.exports = {
 			}
 		]
 	},
+	node: {
+	  fs: "empty"
+	},
 	babel: {
 		plugins: [['transform-es2015-classes', {loose: true}]]
 	},
@@ -114,7 +117,7 @@ module.exports = {
 		use: [require('nib')()],
 		import: [
 			'~nib/lib/nib/index.styl',
-			'~assets/spritesheets/sprites.styl',
+			//'~assets/spritesheets/sprites.styl',
 
 			//comment/uncomment lines if no files matching
 			path.join(__dirname, 'sources/*/settings/**/*.styl'),
@@ -124,6 +127,6 @@ module.exports = {
 		]
 	},
 	glsl: {
-	    chunkPath: path(__dirname, "/sources/glsl")
+	    chunkPath: path.join(__dirname, "/sources/glsl")
 	}
 };
