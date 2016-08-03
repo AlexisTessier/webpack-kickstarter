@@ -60,35 +60,30 @@ module.exports = {
 		}
 	},
 	resolve: {
-    	extensions: ['', '.js', '.jsx'],
+    	extensions: ['', '.js'],
 		modulesDirectories: ["sources/main", "sources/generated", "web_modules", "node_modules"]
 	},
 	plugins: plugins,
 	module: {
 		loaders: [
 			{
-                test: /\.glsl$/,
-                loader: 'webpack-glsl'
+                test: /\.(glsl|vs|fs)$/,
+                loader: 'shader'
             },
 			{
 				test: /\.json$/,
 				loader: "json"
 			},
 			{
-				test: /\.react\.jade$/,
-				loader: "jade-react" 
+				test: /\.(jade|pug)$/,
+				loader: "pug"
 			},
 			{
-				test: /\.jade$/,
-				exclude: /\.react\.jade$/,
-				loader: "jade"
-			},
-			{
-				test: /\.(js?|jsx)$/,
+				test: /\.(js?)$/,
 				exclude: /(node_modules|bower_components)/,
 				loader: 'babel',
 				query: {
-					presets: ['es2015', 'react']
+					presets: ['es2015']
 				}
 			},
 			{
@@ -127,5 +122,8 @@ module.exports = {
 			path.join(__dirname, 'sources/*/view/**/*.styl'),
 			// path.join(__dirname, 'sources/abstract/**/*.styl')
 		]
+	},
+	glsl: {
+	    chunkPath: path(__dirname, "/sources/glsl")
 	}
 };
