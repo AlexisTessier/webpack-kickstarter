@@ -1,3 +1,10 @@
+⚠️ Deprecated
+============
+
+There is a lot of stable default config or project scaffolding cli for webpack now. Use them.
+
++ My favorite: https://github.com/facebook/create-react-app
+
 Webpack starterkit
 ==================
 
